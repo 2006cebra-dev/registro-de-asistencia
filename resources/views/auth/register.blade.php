@@ -20,6 +20,12 @@
                 <p class="text-gray-500 text-xs mt-1">Solicita este código a tu docente</p>
             </div>
             <div class="mt-4">
+                <label for="codigo_docente" class="block text-sm font-medium text-gray-300">¿Eres docente? <span class="text-gray-500">(opcional)</span></label>
+                <input id="codigo_docente" type="text" name="codigo_docente" value="{{ old('codigo_docente') }}" placeholder="Código de docente" class="mt-1 w-full rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-yellow-500 focus:ring focus:ring-yellow-500/20 transition-all px-4 py-2.5">
+                @error('codigo_docente') <p class="text-red-400 text-sm mt-1">{{ $message }}</p> @enderror
+                <p class="text-gray-500 text-xs mt-1">Si tienes un código de docente, ingrésalo para crear una cuenta de docente</p>
+            </div>
+            <div class="mt-4">
                 <label for="password" class="block text-sm font-medium text-gray-300">Contraseña</label>
                 <input id="password" type="password" name="password" required autocomplete="new-password" class="mt-1 w-full rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-yellow-500 focus:ring focus:ring-yellow-500/20 transition-all px-4 py-2.5">
                 @error('password') <p class="text-red-400 text-sm mt-1">{{ $message }}</p> @enderror

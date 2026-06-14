@@ -27,16 +27,19 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($cursos as $curso) {
-            Curso::create($curso);
+            Curso::firstOrCreate(['codigo_registro' => $curso['codigo_registro']], $curso);
         }
 
-        User::create([
-            'name' => 'Profesor Admin',
-            'email' => 'docente@mail.com',
-            'password' => bcrypt('password'),
-            'rol' => 'docente',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'docente@mail.com'],
+            ['name' => 'Profesor Admin', 'password' => bcrypt('password'), 'rol' => 'docente']
+        );
 
-        $this->command->info('Cursos y docente creados exitosamente.');
+        User::firstOrCreate(
+            ['email' => 'supervisor@mail.com'],
+            ['name' => 'Supervisor Admin', 'password' => bcrypt('password'), 'rol' => 'supervisor']
+        );
+
+        $this->command->info('Cursos, docente y supervisor creados exitosamente.');
     }
 }

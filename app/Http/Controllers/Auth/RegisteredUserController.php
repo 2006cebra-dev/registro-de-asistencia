@@ -30,25 +30,37 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'codigo_registro' => ['required', 'string', 'exists:cursos,codigo_registro'],
+            'codigo_docente' => ['nullable', 'string'],
         ]);
 
-        $curso = Curso::where('codigo_registro', $request->codigo_registro)->first();
+        $esDocente = $request->filled('codigo_docente') && $request->codigo_docente === env('DOCENTE_REGISTRATION_CODE', 'DOC2026');
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'rol' => 'estudiante',
-        ]);
+        if ($esDocente) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'rol' => 'docente',
+            ]);
+        } else {
+            $curso = Curso::where('codigo_registro', $request->codigo_registro)->first();
 
-        Estudiante::create([
-            'user_id' => $user->id,
-            'nombre' => $request->name,
-            'email' => $request->email,
-            'curso_id' => $curso->id,
-            'codigo' => Str::random(20),
-            'activo' => true,
-        ]);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'rol' => 'estudiante',
+            ]);
+
+            Estudiante::create([
+                'user_id' => $user->id,
+                'nombre' => $request->name,
+                'email' => $request->email,
+                'curso_id' => $curso->id,
+                'codigo' => Str::random(20),
+                'activo' => true,
+            ]);
+        }
 
         event(new Registered($user));
 

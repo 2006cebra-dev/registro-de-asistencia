@@ -7,8 +7,8 @@
     <title>@yield('title', 'Asistencia QR') - Sistema de Asistencia</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+    <script data-cfasync="false" src="https://cdn.tailwindcss.com"></script>
+    <script data-cfasync="false" defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
     <style>
         [x-cloak] { display: none !important; }
         body { font-family: 'Figtree', sans-serif; }
@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false">
         function showToast(type, message) {
             const container = document.getElementById('toast-container');
             const icons = {
@@ -62,7 +62,7 @@
             const toast = document.createElement('div');
             toast.className = 'pointer-events-auto flex items-start gap-3 max-w-sm backdrop-blur-xl bg-white/95 rounded-xl shadow-2xl border-l-4 ' + (borders[type] || borders.info) + ' p-4 toast-enter';
             toast.innerHTML = '<div class="flex-shrink-0 mt-0.5">' + (icons[type] || icons.info) + '</div>' +
-                '<p class="text-sm text-gray-800 flex-1">' + message + '</p>' +
+                '<p class="text-sm text-gray-200 flex-1">' + message + '</p>' +
                 '<button onclick="this.closest(\'.pointer-events-auto\').remove()" class="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>';
             container.appendChild(toast);
             setTimeout(() => {

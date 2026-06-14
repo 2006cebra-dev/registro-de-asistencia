@@ -3,19 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asistencia;
+use App\Models\Curso;
 use App\Models\Estudiante;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AsistenciaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $asistencias = Asistencia::with('estudiante.curso')
-            ->orderBy('fecha', 'desc')
-            ->paginate(15);
+        $user = auth()->user();
+        $query = Asistencia::with('estudiante.curso');
 
-        return view('asistencias.index', compact('asistencias'));
+        if ($user->rol === 'estudiante') {
+            $estudiante = $user->estudiante;
+            if ($estudiante) {
+                $query->where('estudiante_id', $estudiante->id);
+            } else {
+                $query->whereRaw('1 = 0');
+            }
+        }
+
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha', '>=', $request->fecha_desde);
+        }
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha', '<=', $request->fecha_hasta);
+        }
+        if ($request->filled('curso_id')) {
+            $query->whereHas('estudiante', fn($q) => $q->where('curso_id', $request->curso_id));
+        }
+
+        $asistencias = $query->orderBy('fecha', 'desc')
+            ->orderBy('hora_entrada', 'desc')
+            ->paginate(20)
+            ->withQueryString();
+
+        $cursos = Curso::where('activo', true)->get();
+
+        return view('asistencias.index', compact('asistencias', 'cursos', 'user'));
     }
 
     public function create()
@@ -40,44 +66,61 @@ class AsistenciaController extends Controller
 
     public function show(Asistencia $asistencia)
     {
-        $asistencia->load('estudiante.curso');
-
+        $asistencia->load('estudiante.curso', 'estudiante.user');
         return view('asistencias.show', compact('asistencia'));
+    }
+
+    public function export(Request $request)
+    {
+        $query = Asistencia::with('estudiante.curso', 'estudiante.user');
+
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha', '>=', $request->fecha_desde);
+        }
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha', '<=', $request->fecha_hasta);
+        }
+        if ($request->filled('curso_id')) {
+            $query->whereHas('estudiante', fn($q) => $q->where('curso_id', $request->curso_id));
+        }
+
+        $asistencias = $query->orderBy('fecha', 'desc')->orderBy('hora_entrada', 'desc')->get();
+        $cursos = Curso::where('activo', true)->get();
+        $cursoFiltro = $request->filled('curso_id') ? Curso::find($request->curso_id) : null;
+
+        return view('asistencias.export', compact('asistencias', 'cursos', 'cursoFiltro'));
     }
 
     public function marcarEntrada(Request $request)
     {
         $codigo = $request->input('codigo');
+        $user = $request->user();
 
-        $estudiante = Estudiante::where('codigo', $codigo)
-            ->where('activo', true)
-            ->first();
-
-        if (!$estudiante) {
+        if ($user->rol !== 'estudiante' || !$user->estudiante) {
             return redirect()->back()
-                ->with('error', 'Estudiante no encontrado o inactivo.');
+                ->with('error', 'Solo los estudiantes pueden marcar asistencia.');
         }
 
-        $today = Carbon::today()->toDateString();
-        $now = Carbon::now()->toTimeString();
+        $curso = Curso::where('codigo_registro', $codigo)->where('activo', true)->first();
 
-        $asistenciaHoy = Asistencia::where('estudiante_id', $estudiante->id)
-            ->where('fecha', $today)
-            ->whereNull('hora_salida')
-            ->first();
-
-        if ($asistenciaHoy) {
-            $asistenciaHoy->update(['hora_salida' => $now]);
-
+        if (!$curso) {
             return redirect()->back()
-                ->with('success', 'Salida registrada correctamente.');
+                ->with('error', 'Código de curso inválido o curso inactivo.');
         }
+
+        $estudiante = $user->estudiante;
+
+        if ($estudiante->curso_id !== $curso->id) {
+            return redirect()->back()
+                ->with('error', 'No estás inscrito en este curso.');
+        }
+
+        $now = Carbon::now();
 
         Asistencia::create([
             'estudiante_id' => $estudiante->id,
-            'fecha'         => $today,
-            'hora_entrada'  => $now,
-            'hora_salida'   => null,
+            'fecha'         => $now->toDateString(),
+            'hora_entrada'  => $now->toTimeString(),
         ]);
 
         return redirect()->back()

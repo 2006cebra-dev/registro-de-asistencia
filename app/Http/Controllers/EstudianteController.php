@@ -9,10 +9,24 @@ use Illuminate\Support\Str;
 
 class EstudianteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $estudiantes = Estudiante::with('curso')->orderBy('nombre')->get();
-        return view('estudiantes.index', compact('estudiantes'));
+        $query = Estudiante::with(['curso', 'user'])->orderBy('nombre');
+
+        if ($request->filled('estado')) {
+            if ($request->estado === 'activos') {
+                $query->where('activo', true);
+            } elseif ($request->estado === 'inactivos') {
+                $query->where('activo', false);
+            }
+        }
+
+        $estudiantes = $query->get();
+        $total = Estudiante::count();
+        $activos = Estudiante::where('activo', true)->count();
+        $inactivos = $total - $activos;
+        $cursosCount = Curso::where('activo', true)->count();
+        return view('estudiantes.index', compact('estudiantes', 'total', 'activos', 'inactivos', 'cursosCount'));
     }
 
     public function create()
@@ -73,5 +87,14 @@ class EstudianteController extends Controller
 
         return redirect()->route('estudiantes.index')
             ->with('success', 'Estudiante desactivado correctamente.');
+    }
+
+    public function toggleActivo(Estudiante $estudiante)
+    {
+        $estudiante->update(['activo' => !$estudiante->activo]);
+
+        $msg = $estudiante->activo ? 'activado' : 'desactivado';
+        return redirect()->route('estudiantes.index')
+            ->with('success', "Estudiante {$msg} correctamente.");
     }
 }

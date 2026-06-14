@@ -24,14 +24,21 @@ class CursoController extends Controller
             'nombre' => 'required',
             'codigo_registro' => 'required|string|unique:cursos,codigo_registro',
             'descripcion' => 'nullable',
+            'foto' => 'nullable|image|max:2048',
         ]);
 
-        Curso::create([
+        $data = [
             'nombre' => $request->nombre,
             'codigo_registro' => strtoupper($request->codigo_registro),
             'descripcion' => $request->descripcion,
             'activo' => true,
-        ]);
+        ];
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('cursos', 'public');
+        }
+
+        Curso::create($data);
 
         return redirect()->route('cursos.index')
             ->with('success', 'Curso creado exitosamente.');
@@ -39,9 +46,13 @@ class CursoController extends Controller
 
     public function show(Curso $curso)
     {
+        $estudiantes = $curso->estudiantes()->with(['user', 'asistencias' => function ($q) {
+            $q->orderBy('fecha', 'desc')->orderBy('hora_entrada', 'desc');
+        }])->get();
+
         return view('cursos.show', [
             'curso' => $curso,
-            'estudiantes' => $curso->estudiantes,
+            'estudiantes' => $estudiantes,
         ]);
     }
 
@@ -56,16 +67,36 @@ class CursoController extends Controller
             'nombre' => 'required',
             'codigo_registro' => 'required|string|unique:cursos,codigo_registro,' . $curso->id,
             'descripcion' => 'nullable',
+            'foto' => 'nullable|image|max:2048',
         ]);
 
-        $curso->update([
+        $data = [
             'nombre' => $request->nombre,
             'codigo_registro' => strtoupper($request->codigo_registro),
             'descripcion' => $request->descripcion,
-        ]);
+        ];
+
+        if ($request->hasFile('foto')) {
+            if ($curso->foto) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($curso->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('cursos', 'public');
+        }
+
+        $curso->update($data);
 
         return redirect()->route('cursos.index')
             ->with('success', 'Curso actualizado exitosamente.');
+    }
+
+    public function attendancePdf(Curso $curso)
+    {
+        $estudiantes = $curso->estudiantes()
+            ->with(['asistencias' => fn($q) => $q->orderBy('fecha', 'desc')->orderBy('hora_entrada', 'desc'), 'user'])
+            ->where('activo', true)
+            ->get();
+
+        return view('cursos.attendance-pdf', compact('curso', 'estudiantes'));
     }
 
     public function destroy(Curso $curso)

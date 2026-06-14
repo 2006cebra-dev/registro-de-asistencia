@@ -19,7 +19,7 @@
             </div>
             <div class="mt-4 flex items-center justify-between">
                 <label class="flex items-center text-sm text-gray-300">
-                    <input type="checkbox" name="remember" class="rounded bg-white/10 border-white/20 text-yellow-500 focus:ring-yellow-500/20">
+                    <input type="checkbox" name="remember" class="rounded bg-white/10 border-white/20 accent-yellow-500 focus:ring-yellow-500/20">
                     <span class="ml-2">Recordarme</span>
                 </label>
                 @if (Route::has('password.request'))

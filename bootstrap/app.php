@@ -18,6 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->validateCsrfTokens(except: [
             '*/register',
+            '*/login',
+            '*/cursos*',
+            '*/asistencias*',
+            '*/estudiantes*',
+            '*/profile*',
+            '*/qr*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -4,27 +4,23 @@
         <a href="{{ route('asistencias.index') }}" class="btn-outline">Volver</a>
     </div>
     <div class="max-w-2xl mx-auto">
-        <div class="card p-8">
+        <div class="bg-gradient-to-br from-[#1a3a6b] to-[#0a1628] rounded-2xl border border-white/10 p-8">
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <p class="text-xs text-gray-500 uppercase font-semibold">Estudiante</p>
-                    <p class="font-medium text-gray-800">{{ $asistencia->estudiante->nombre }}</p>
+                    <p class="font-medium text-gray-200">{{ $asistencia->estudiante->nombre }}</p>
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 uppercase font-semibold">Curso</p>
-                    <p class="font-medium text-gray-800">{{ $asistencia->estudiante->curso->nombre ?? '-' }}</p>
+                    <p class="font-medium text-gray-200">{{ $asistencia->estudiante->curso?->nombre ?? '-' }}</p>
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 uppercase font-semibold">Fecha</p>
-                    <p class="font-medium text-gray-800">{{ \Carbon\Carbon::parse($asistencia->fecha)->format('d/m/Y') }}</p>
+                    <p class="font-medium text-gray-200">{{ \Carbon\Carbon::parse($asistencia->fecha)->format('d/m/Y') }}</p>
                 </div>
                 <div>
-                    <p class="text-xs text-gray-500 uppercase font-semibold">Hora de Entrada</p>
-                    <p class="font-medium text-gray-800">{{ $asistencia->hora_entrada }}</p>
-                </div>
-                <div>
-                    <p class="text-xs text-gray-500 uppercase font-semibold">Hora de Salida</p>
-                    <p class="font-medium text-gray-800">{{ $asistencia->hora_salida ?? 'Aún no registrada' }}</p>
+                    <p class="text-xs text-gray-500 uppercase font-semibold">Hora</p>
+                    <p class="font-medium text-gray-200 font-mono">{{ \Carbon\Carbon::parse($asistencia->hora_entrada)->format('h:i A') }}</p>
                 </div>
             </div>
         </div>
