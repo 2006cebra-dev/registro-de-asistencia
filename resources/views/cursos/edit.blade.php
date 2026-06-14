@@ -1,13 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-600 to-yellow-800 flex items-center justify-center shadow-lg">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-            </div>
-            <div>
-                <span class="text-white">Editar Curso</span>
-                <p class="text-sm font-normal text-gray-300">Modifica los datos del curso</p>
-            </div>
+        <div>
+            <span class="text-white text-lg font-bold tracking-tight">Editar Curso</span>
+            <p class="text-sm text-gray-400">Modifica los datos del curso</p>
         </div>
     </x-slot>
 

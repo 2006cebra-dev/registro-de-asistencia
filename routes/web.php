@@ -22,13 +22,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::middleware('role:docente|supervisor')->group(function () {
-        Route::resource('cursos', CursoController::class);
-        Route::get('/cursos/{curso}/asistencias/pdf', [CursoController::class, 'attendancePdf'])->name('cursos.attendance-pdf');
-        Route::resource('estudiantes', EstudianteController::class);
-        Route::patch('/estudiantes/{estudiante}/toggle', [EstudianteController::class, 'toggleActivo'])->name('estudiantes.toggle');
-        Route::get('/qr', [QRController::class, 'index'])->name('qr.index');
-    });
+    Route::resource('cursos', CursoController::class);
+    Route::get('/cursos/{curso}/asistencias/pdf', [CursoController::class, 'attendancePdf'])->name('cursos.attendance-pdf');
+    Route::resource('estudiantes', EstudianteController::class);
+    Route::patch('/estudiantes/{estudiante}/toggle', [EstudianteController::class, 'toggleActivo'])->name('estudiantes.toggle');
+    Route::get('/qr', [QRController::class, 'index'])->name('qr.index');
 
     Route::middleware('role:supervisor')->group(function () {
         Route::get('/usuarios/crear-docente', [UserController::class, 'createDocente'])->name('usuarios.crear-docente');

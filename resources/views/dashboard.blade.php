@@ -1,12 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-600 to-yellow-800 flex items-center justify-center shadow-lg">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-            </div>
             <div>
-                <span class="text-white">Panel de Control</span>
-                <p class="text-sm font-normal text-gray-300">Visión general del sistema</p>
+                <span class="text-white text-lg font-bold tracking-tight">Panel de Control</span>
+                <p class="text-sm text-gray-400">Visión general del sistema</p>
             </div>
         </div>
     </x-slot>
@@ -58,36 +55,37 @@
     @endphp
 
     @if (!$estudiante && $user->rol === 'estudiante')
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-900/30 to-[#0d1f3c] border border-yellow-500/20 mb-6">
-        <div class="relative p-5 sm:p-7 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-yellow-500/20 flex items-center justify-center mx-auto mb-4 border border-yellow-500/30">
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-900/40 to-[#0d1f3c] border border-yellow-500/25 mb-6 shadow-lg shadow-yellow-500/5">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-yellow-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div class="relative p-6 sm:p-8 text-center">
+            <div class="w-16 h-16 rounded-2xl bg-yellow-500/20 flex items-center justify-center mx-auto mb-4 border border-yellow-500/30 ring-2 ring-yellow-500/10">
                 <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
-            <h2 class="text-xl font-bold text-white mb-2">{{ $saludo }}, {{ $user->name }}</h2>
+            <h2 class="text-2xl font-bold text-white mb-2">{{ $saludo }}, {{ $user->name }}</h2>
             <p class="text-white/60 text-sm mb-4">Tu cuenta de estudiante no tiene un perfil vinculado.</p>
-            <p class="text-white/40 text-xs">Contacta al administrador para que asocie tu cuenta con un registro de estudiante.</p>
+            <p class="text-white/40 text-xs max-w-md mx-auto">Contacta al administrador para que asocie tu cuenta con un registro de estudiante.</p>
         </div>
     </div>
     @elseif ($estudiante)
     @php $fotoEstudiante = $user->foto ? asset('storage/' . $user->foto) : null; @endphp
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a3a6b] to-[#0d1f3c] border border-white/10 mb-6">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl"></div>
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a3a6b] to-[#0d1f3c] border border-white/10 mb-6 shadow-lg">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-yellow-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-56 h-56 bg-blue-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
         <div class="relative p-5 sm:p-7">
-            <div class="flex items-center gap-4">
+            <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
                 @if ($fotoEstudiante)
-                    <img src="{{ $fotoEstudiante }}" alt="" class="w-14 h-14 rounded-2xl object-cover border-2 border-yellow-500/30 shadow-xl">
+                    <img src="{{ $fotoEstudiante }}" alt="" class="w-16 h-16 rounded-2xl object-cover border-2 border-yellow-500/30 shadow-xl ring-2 ring-yellow-500/10">
                 @else
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-700 flex items-center justify-center shadow-xl border-2 border-yellow-500/30">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-700 flex items-center justify-center shadow-xl border-2 border-yellow-500/30 ring-2 ring-yellow-500/10">
                         <span class="text-white font-bold text-xl">{{ substr($estudiante->nombre, 0, 1) }}</span>
                     </div>
                 @endif
-                <div class="flex-1 min-w-0">
+                <div class="flex-1 min-w-0 text-center sm:text-left">
                     <p class="text-yellow-400 text-xs font-semibold uppercase tracking-widest">{{ $saludo }}</p>
                     <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5 truncate">{{ $estudiante->nombre }}</h2>
                     <p class="text-sm text-white/60 truncate">{{ $estudiante->curso?->nombre ?? 'Sin curso' }} · <span class="text-yellow-400 font-mono font-semibold">{{ $estudiante->curso?->codigo_registro ?? '---' }}</span></p>
                 </div>
-                <a href="{{ route('qr.escanner') }}" class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/30">
+                <a href="{{ route('qr.escanner') }}" class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/30 hover:scale-105 active:scale-95">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01"/></svg>
                     Registrar
                 </a>
@@ -95,20 +93,20 @@
         </div>
     </div>
     @elseif ($user->rol === 'supervisor')
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-900/30 to-[#0d1f3c] border border-purple-500/20 mb-6">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl"></div>
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-900/40 to-[#0d1f3c] border border-purple-500/25 mb-6 shadow-lg shadow-purple-500/5">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
         <div class="relative p-5 sm:p-7">
-            <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-xl border-2 border-purple-500/30">
+            <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-xl border-2 border-purple-500/30 ring-2 ring-purple-500/10">
                     <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                 </div>
-                <div class="flex-1 min-w-0">
+                <div class="flex-1 min-w-0 text-center sm:text-left">
                     <p class="text-purple-400 text-xs font-semibold uppercase tracking-widest">Supervisor · {{ $saludo }}</p>
                     <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5 truncate">{{ $user->name }}</h2>
                     <p class="text-sm text-white/60 truncate"><span class="text-purple-400 font-semibold">{{ $totalUsuarios }}</span> usuarios registrados · <span class="text-yellow-400 font-semibold">{{ $cursosActivos }}</span> cursos activos</p>
                 </div>
-                <a href="{{ route('usuarios.crear-docente') }}" class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500 hover:bg-purple-400 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30">
+                <a href="{{ route('usuarios.crear-docente') }}" class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500 hover:bg-purple-400 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 hover:scale-105 active:scale-95">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                     Gestionar
                 </a>
@@ -146,18 +144,19 @@
         @endphp
 
         @foreach ($stats as $stat)
-        <div class="group relative overflow-hidden rounded-xl bg-[#132347] border border-white/10 p-4 lg:p-5 hover:border-yellow-500/30 transition-all duration-300">
-            <div class="absolute -top-3 -right-3 w-20 h-20 bg-gradient-to-br {{ $stat['color'] }} rounded-full blur-xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+        <div class="card-3d group relative overflow-hidden rounded-xl bg-[#132347] border border-white/10 p-4 lg:p-5 hover:border-yellow-500/30 hover:shadow-xl hover:shadow-yellow-500/10">
+            <div class="absolute -top-3 -right-3 w-20 h-20 bg-gradient-to-br {{ $stat['color'] }} rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity group-hover:scale-150"></div>
+            <div class="absolute -bottom-2 -left-2 w-16 h-16 bg-gradient-to-tr {{ $stat['color'] }} rounded-full blur-lg opacity-10 group-hover:opacity-30 transition-opacity group-hover:scale-150"></div>
             <div class="relative">
                 <div class="flex items-center justify-between mb-2 lg:mb-3">
-                    <span class="text-white/50 text-xs font-semibold uppercase tracking-wider">{{ $stat['label'] }}</span>
-                    <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-gradient-to-br {{ $stat['color'] }} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <span class="text-white/50 text-xs font-semibold uppercase tracking-wider group-hover:text-white/70 transition-colors">{{ $stat['label'] }}</span>
+                    <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-gradient-to-br {{ $stat['color'] }} flex items-center justify-center shadow-lg group-hover:scale-125 group-hover:rotate-6 group-hover:shadow-xl transition-all duration-300">
                         <svg class="w-4 h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $stat['icon'] }}"/></svg>
                     </div>
                 </div>
-                <p class="text-2xl lg:text-3xl font-bold text-white tracking-tight">{{ $stat['value'] }}</p>
+                <p class="text-2xl lg:text-3xl font-bold text-white tracking-tight group-hover:tracking-normal transition-all">{{ $stat['value'] }}</p>
                 @if (isset($stat['sub']))
-                <p class="text-xs text-white/40 mt-1 lg:mt-1.5 lg:block">{{ $stat['sub'] }}</p>
+                <p class="text-xs text-white/40 mt-1 lg:mt-1.5 lg:block group-hover:text-white/60 transition-colors">{{ $stat['sub'] }}</p>
                 @endif
             </div>
         </div>
@@ -166,17 +165,20 @@
 
     @if (in_array($user->rol, ['docente', 'supervisor']))
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-5 mb-6">
-        <div class="lg:col-span-2 rounded-xl bg-[#132347] border border-white/10 p-5">
-            <h3 class="text-white font-bold text-sm mb-4 flex items-center gap-2">
-                <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                Asistencias últimos 7 días
-            </h3>
+        <div class="card-3d lg:col-span-2 rounded-xl bg-[#132347] border border-white/10 p-5 hover:border-yellow-500/30 hover:shadow-xl hover:shadow-yellow-500/5 shadow-lg">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-bold text-sm flex items-center gap-2">
+                    <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    Asistencias últimos 7 días
+                </h3>
+                <span class="text-[10px] text-white/30 bg-white/5 px-2 py-1 rounded-md font-mono">{{ now()->subDays(6)->locale('es')->isoFormat('DD MMM') }} — {{ now()->locale('es')->isoFormat('DD MMM') }}</span>
+            </div>
             <div class="w-full" style="max-height:200px">
                 <canvas id="chartSemanal" class="w-full" style="max-height:180px"></canvas>
             </div>
         </div>
         @if (count($asistenciasPorCurso) > 0)
-        <div class="rounded-xl bg-[#132347] border border-white/10 p-5">
+        <div class="card-3d rounded-xl bg-[#132347] border border-white/10 p-5 hover:border-yellow-500/30 hover:shadow-xl hover:shadow-yellow-500/5 shadow-lg">
             <h3 class="text-white font-bold text-sm mb-4 flex items-center gap-2">
                 <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
                 Distribución por Curso
@@ -189,17 +191,18 @@
     </div>
 
     @if ($cursos->count() > 0)
-    <div class="rounded-xl bg-[#132347] border border-white/10 overflow-hidden mb-6">
-        <div class="p-5 border-b border-white/10">
+    <div class="card-3d rounded-xl bg-[#132347] border border-white/10 overflow-hidden mb-6 shadow-lg hover:border-yellow-500/20 hover:shadow-xl hover:shadow-yellow-500/5">
+        <div class="p-5 border-b border-white/10 flex items-center justify-between">
             <h3 class="text-white font-bold text-sm flex items-center gap-2">
                 <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 Resumen de Cursos
             </h3>
+            <span class="text-[10px] text-white/30 bg-white/5 px-2 py-1 rounded-md">{{ $cursos->count() }} cursos</span>
         </div>
         <div class="overflow-x-auto hidden lg:block">
             <table class="w-full">
                 <thead>
-                    <tr class="border-b border-white/10 bg-white/5">
+                    <tr class="border-b border-white/10 bg-white/[0.03]">
                         <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Curso</th>
                         <th class="px-5 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Código</th>
                         <th class="px-5 py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Estudiantes</th>
@@ -208,21 +211,28 @@
                         <th class="px-5 py-3 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">Acción</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-white/10">
+                <tbody class="divide-y divide-white/5">
                     @foreach ($cursos as $curso)
                     @php
                         $hoyCurso = \App\Models\Asistencia::whereHas('estudiante', fn($q) => $q->where('curso_id', $curso->id))->whereDate('fecha', now())->count();
                     @endphp
-                    <tr class="hover:bg-white/5 transition-colors">
+                    <tr class="hover:bg-white/[0.03] transition-colors {{ $loop->even ? 'bg-white/[0.015]' : '' }}">
                         <td class="px-5 py-3.5 text-sm text-white font-medium">{{ $curso->nombre }}</td>
-                        <td class="px-5 py-3.5 text-sm text-gray-400 font-mono">{{ $curso->codigo_registro }}</td>
-                        <td class="px-5 py-3.5 text-center text-sm text-white">{{ $curso->estudiantes_count }}</td>
+                        <td class="px-5 py-3.5">
+                            <span class="inline-flex text-xs font-mono text-gray-400 bg-white/5 px-2 py-1 rounded-md">{{ $curso->codigo_registro }}</span>
+                        </td>
+                        <td class="px-5 py-3.5 text-center">
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 text-sm font-semibold">{{ $curso->estudiantes_count }}</span>
+                        </td>
                         <td class="px-5 py-3.5 text-center text-sm text-yellow-400 font-semibold">{{ $asistenciasPorCurso[$curso->nombre] ?? 0 }}</td>
                         <td class="px-5 py-3.5 text-center text-sm">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $hoyCurso > 0 ? 'bg-green-500/20 text-green-300' : 'bg-gray-500/20 text-gray-400' }}">{{ $hoyCurso }}</span>
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium {{ $hoyCurso > 0 ? 'bg-green-500/15 text-green-300' : 'bg-gray-500/15 text-gray-400' }}">
+                                @if ($hoyCurso > 0)<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>@endif
+                                {{ $hoyCurso }}
+                            </span>
                         </td>
                         <td class="px-5 py-3.5 text-right">
-                            <a href="{{ route('cursos.attendance-pdf', $curso) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors">
+                            <a href="{{ route('cursos.attendance-pdf', $curso) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-colors">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                                 PDF
                             </a>
@@ -237,26 +247,29 @@
             @php
                 $hoyCurso = \App\Models\Asistencia::whereHas('estudiante', fn($q) => $q->where('curso_id', $curso->id))->whereDate('fecha', now())->count();
             @endphp
-            <div class="p-3.5 rounded-lg bg-white/5 border border-white/5 hover:border-yellow-500/20 transition-colors">
-                <div class="flex items-center justify-between mb-2">
+            <div class="p-4 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-yellow-500/20 hover:bg-white/[0.06] transition-all">
+                <div class="flex items-center justify-between mb-3">
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-medium text-white truncate">{{ $curso->nombre }}</p>
-                        <p class="text-xs text-gray-400 font-mono">{{ $curso->codigo_registro }}</p>
+                        <p class="text-xs text-gray-500 font-mono mt-0.5">{{ $curso->codigo_registro }}</p>
                     </div>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium shrink-0 ml-2 {{ $hoyCurso > 0 ? 'bg-green-500/20 text-green-300' : 'bg-gray-500/20 text-gray-400' }}">{{ $hoyCurso }} hoy</span>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium shrink-0 ml-2 {{ $hoyCurso > 0 ? 'bg-green-500/15 text-green-300' : 'bg-gray-500/15 text-gray-400' }}">
+                        @if ($hoyCurso > 0)<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>@endif
+                        {{ $hoyCurso }} hoy
+                    </span>
                 </div>
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3 text-xs text-gray-400">
-                        <span class="flex items-center gap-1">
+                    <div class="flex items-center gap-4 text-xs text-gray-500">
+                        <span class="flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857"/></svg>
-                            {{ $curso->estudiantes_count }}
+                            <span class="text-white/70">{{ $curso->estudiantes_count }}</span>
                         </span>
-                        <span class="flex items-center gap-1">
+                        <span class="flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                            {{ $asistenciasPorCurso[$curso->nombre] ?? 0 }} total
+                            <span class="text-yellow-400/80">{{ $asistenciasPorCurso[$curso->nombre] ?? 0 }}</span>
                         </span>
                     </div>
-                    <a href="{{ route('cursos.attendance-pdf', $curso) }}" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors">
+                    <a href="{{ route('cursos.attendance-pdf', $curso) }}" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-medium bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         PDF
                     </a>
@@ -267,49 +280,52 @@
     </div>
     @endif
 
-    @if (in_array($user->rol, ['supervisor']))
+    @if ($user->rol === 'supervisor')
     @php
         $ultimasAsistencias = \App\Models\Asistencia::with('estudiante.curso', 'estudiante.user')
             ->orderBy('fecha', 'desc')->orderBy('hora_entrada', 'desc')->take(10)->get();
     @endphp
-    <div class="rounded-xl bg-[#132347] border border-white/10 mb-6">
-        <div class="flex items-center justify-between p-5 border-b border-white/10">
+    <div class="card-3d rounded-xl bg-[#132347] border border-white/10 mb-6 shadow-lg overflow-hidden hover:border-yellow-500/20 hover:shadow-xl hover:shadow-yellow-500/5">
+        <div class="flex items-center justify-between p-5 border-b border-white/10 bg-white/[0.02]">
             <h3 class="text-white font-bold text-sm flex items-center gap-2">
                 <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Últimas Asistencias
             </h3>
-            <a href="{{ route('asistencias.index') }}" class="text-xs text-purple-400 hover:text-purple-300 font-medium flex items-center gap-1">
+            <a href="{{ route('asistencias.index') }}" class="text-xs text-purple-400 hover:text-purple-300 font-medium flex items-center gap-1 bg-purple-500/10 px-3 py-1.5 rounded-lg hover:bg-purple-500/20 transition-colors">
                 Ver todas <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </a>
         </div>
-        <div class="divide-y divide-white/5">
+        <div class="divide-y divide-white/[0.04]">
             @forelse ($ultimasAsistencias as $a)
-            <div class="flex items-center justify-between py-3 px-5 hover:bg-white/5 transition-colors">
+            <div class="flex items-center justify-between py-3 px-5 hover:bg-white/[0.02] transition-colors">
                 <div class="flex items-center gap-3 min-w-0 flex-1">
                     @php $fotoA = $a->estudiante->user?->foto ? asset('storage/'.$a->estudiante->user->foto) : null; @endphp
                     @if ($fotoA)
-                        <img src="{{ $fotoA }}" alt="" class="w-8 h-8 rounded-full object-cover border border-white/10 shrink-0">
+                        <img src="{{ $fotoA }}" alt="" class="w-9 h-9 rounded-full object-cover border border-white/10 shrink-0 ring-2 ring-purple-500/10">
                     @else
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white font-bold text-xs shrink-0">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white font-bold text-xs shrink-0 ring-2 ring-purple-500/10">
                             {{ substr($a->estudiante->nombre, 0, 2) }}
                         </div>
                     @endif
                     <div class="min-w-0">
                         <p class="text-sm font-medium text-white truncate">{{ $a->estudiante->nombre }}</p>
-                        <p class="text-xs text-white/50 truncate">{{ $a->estudiante->curso?->nombre ?? '' }}</p>
+                        <p class="text-xs text-white/40 truncate">{{ $a->estudiante->curso?->nombre ?? '' }}</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3 shrink-0 ml-2">
-                    <span class="text-xs text-white/60 hidden sm:block">{{ \Carbon\Carbon::parse($a->fecha)->locale('es')->isoFormat('DD MMM') }}</span>
-                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-purple-500/20 text-purple-300 text-xs font-mono font-semibold">{{ \Carbon\Carbon::parse($a->hora_entrada)->format('h:i A') }}</span>
+                    <span class="text-xs text-white/40 hidden sm:block">{{ \Carbon\Carbon::parse($a->fecha)->locale('es')->isoFormat('DD MMM') }}</span>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-purple-500/15 text-purple-300 text-xs font-mono font-semibold">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        {{ \Carbon\Carbon::parse($a->hora_entrada)->format('h:i A') }}
+                    </span>
                 </div>
             </div>
             @empty
-            <div class="text-center py-8">
-                <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                    <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            <div class="text-center py-10">
+                <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-7 h-7 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 </div>
-                <p class="text-white/50 text-sm">No hay asistencias registradas</p>
+                <p class="text-white/40 text-sm">No hay asistencias registradas</p>
             </div>
             @endforelse
         </div>
@@ -318,7 +334,7 @@
 
     @elseif ($estudiante)
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 mb-6">
-        <div class="rounded-xl bg-[#132347] border border-white/10 p-5">
+        <div class="card-3d rounded-xl bg-[#132347] border border-white/10 p-5 shadow-lg hover:border-yellow-500/30 hover:shadow-xl hover:shadow-yellow-500/5">
             <h3 class="text-white font-bold text-sm mb-4 flex items-center gap-2">
                 <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 Tus asistencias (7 días)
@@ -327,69 +343,72 @@
                 <canvas id="chartEstudiante" class="w-full" style="max-height:180px"></canvas>
             </div>
         </div>
-        <div class="rounded-xl bg-[#132347] border border-white/10 p-5">
+        <div class="card-3d rounded-xl bg-[#132347] border border-white/10 p-5 shadow-lg hover:border-yellow-500/30 hover:shadow-xl hover:shadow-yellow-500/5">
             <h3 class="text-white font-bold text-sm mb-4 flex items-center gap-2">
                 <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Resumen de Asistencia
             </h3>
-            <div class="space-y-3">
-                <div class="flex justify-between items-center py-2.5 border-b border-white/5">
-                    <span class="text-sm text-white/70">Total asistencias</span>
+            <div class="space-y-0 divide-y divide-white/[0.06]">
+                <div class="flex justify-between items-center py-3">
+                    <span class="text-sm text-white/60">Total asistencias</span>
                     <span class="text-sm text-white font-semibold">{{ $estudiante->asistencias()->count() }}</span>
                 </div>
-                <div class="flex justify-between items-center py-2.5 border-b border-white/5">
-                    <span class="text-sm text-white/70">Esta semana</span>
+                <div class="flex justify-between items-center py-3">
+                    <span class="text-sm text-white/60">Esta semana</span>
                     <span class="text-sm text-yellow-400 font-semibold">{{ $estSemanaEst }}</span>
                 </div>
-                <div class="flex justify-between items-center py-2.5 border-b border-white/5">
-                    <span class="text-sm text-white/70">Promedio diario</span>
+                <div class="flex justify-between items-center py-3">
+                    <span class="text-sm text-white/60">Promedio diario</span>
                     <span class="text-sm text-blue-400 font-semibold">{{ $promedio }} /día</span>
                 </div>
-                <div class="flex justify-between items-center py-2.5 border-b border-white/5">
-                    <span class="text-sm text-white/70">Curso</span>
+                <div class="flex justify-between items-center py-3">
+                    <span class="text-sm text-white/60">Curso</span>
                     <span class="text-sm text-yellow-400 font-semibold">{{ $estudiante->curso?->nombre ?? '---' }}</span>
                 </div>
-                <div class="flex justify-between items-center py-2.5">
-                    <span class="text-sm text-white/70">Código de registro</span>
-                    <span class="text-sm font-mono font-bold text-white bg-yellow-600/30 px-2.5 py-1 rounded-md">{{ $estudiante->curso?->codigo_registro ?? '---' }}</span>
+                <div class="flex justify-between items-center py-3">
+                    <span class="text-sm text-white/60">Código de registro</span>
+                    <span class="text-sm font-mono font-bold text-white bg-yellow-600/20 px-2.5 py-1 rounded-md">{{ $estudiante->curso?->codigo_registro ?? '---' }}</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="rounded-xl bg-[#132347] border border-white/10 p-5">
+    <div class="card-3d rounded-xl bg-[#132347] border border-white/10 p-5 shadow-lg hover:border-yellow-500/30 hover:shadow-xl hover:shadow-yellow-500/5">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-white font-bold text-sm flex items-center gap-2">
                 <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Últimas Asistencias
             </h3>
-            <a href="{{ route('asistencias.index') }}" class="text-xs text-yellow-400 hover:text-yellow-300 font-medium flex items-center gap-1">
+            <a href="{{ route('asistencias.index') }}" class="text-xs text-yellow-400 hover:text-yellow-300 font-medium flex items-center gap-1 bg-yellow-500/10 px-3 py-1.5 rounded-lg hover:bg-yellow-500/20 transition-colors">
                 Ver todas
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </a>
         </div>
         @forelse ($estudiante->asistencias()->orderBy('fecha', 'desc')->take(5)->get() as $asistencia)
-        <div class="flex items-center justify-between py-3 border-b border-white/5 last:border-0 group hover:bg-white/5 px-2 -mx-2 rounded-lg transition-colors">
+        <div class="flex items-center justify-between py-3 border-b border-white/[0.04] last:border-0 group hover:bg-white/[0.02] px-2 -mx-2 rounded-lg transition-colors">
             <div class="flex items-center gap-3 min-w-0 flex-1">
-                <div class="w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700 shrink-0 shadow-lg">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700 shrink-0 shadow-lg ring-2 ring-blue-500/10">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <div class="min-w-0">
                     <p class="text-sm font-medium text-white truncate">{{ \Carbon\Carbon::parse($asistencia->fecha)->locale('es')->isoFormat('ddd D [de] MMM') }}</p>
-                    <p class="text-xs text-white/50 truncate">{{ $asistencia->estudiante->curso?->nombre ?? '' }}</p>
+                    <p class="text-xs text-white/40 truncate">{{ $asistencia->estudiante->curso?->nombre ?? '' }}</p>
                 </div>
             </div>
             <div class="shrink-0 ml-2">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-blue-500/20 text-blue-300 text-xs font-mono font-semibold">{{ \Carbon\Carbon::parse($asistencia->hora_entrada)->format('h:i A') }}</span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-500/15 text-blue-300 text-xs font-mono font-semibold">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {{ \Carbon\Carbon::parse($asistencia->hora_entrada)->format('h:i A') }}
+                </span>
             </div>
         </div>
         @empty
-        <div class="text-center py-8">
-            <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        <div class="text-center py-10">
+            <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg class="w-7 h-7 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             </div>
-            <p class="text-white/50 text-sm">Aún no tienes asistencias registradas</p>
-            <a href="{{ route('qr.escanner') }}" class="text-yellow-400 text-sm font-medium hover:text-yellow-300 mt-2 inline-block">Escanear QR →</a>
+            <p class="text-white/40 text-sm">Aún no tienes asistencias registradas</p>
+            <a href="{{ route('qr.escanner') }}" class="inline-flex items-center gap-1.5 text-yellow-400 text-sm font-medium hover:text-yellow-300 mt-3 bg-yellow-500/10 px-4 py-2 rounded-lg hover:bg-yellow-500/20 transition-colors">Escanear QR →</a>
         </div>
         @endforelse
     </div>

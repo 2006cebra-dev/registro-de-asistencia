@@ -1,5 +1,7 @@
 <x-app-layout>
-    <x-slot name="header">{{ $estudiante->nombre }}</x-slot>
+    <x-slot name="header">
+        <span class="text-white text-lg font-bold tracking-tight">{{ $estudiante->nombre }}</span>
+    </x-slot>
     <div class="flex justify-end gap-3 mb-6">
         <a href="{{ route('estudiantes.edit', $estudiante) }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-800 text-white rounded-lg text-sm font-semibold hover:from-yellow-500 hover:to-yellow-700 transition-all shadow-lg">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>

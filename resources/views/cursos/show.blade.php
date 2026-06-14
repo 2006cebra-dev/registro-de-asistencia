@@ -1,13 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-600 to-yellow-800 flex items-center justify-center shadow-lg">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-            </div>
-            <div>
-                <span class="text-white">{{ $curso->nombre }}</span>
-                <p class="text-sm font-normal text-white/60">{{ $curso->descripcion ?? 'Sin descripción' }}</p>
-            </div>
+        <div>
+            <span class="text-white text-lg font-bold tracking-tight">{{ $curso->nombre }}</span>
+            <p class="text-sm text-gray-400">{{ $curso->descripcion ?? 'Sin descripción' }}</p>
         </div>
     </x-slot>
 
@@ -29,7 +24,7 @@
         </a>
     </div>
 
-    <div class="rounded-xl bg-[#132347] border border-white/10 p-5 mb-6">
+    <div class="card-3d rounded-xl bg-[#132347] border border-white/10 p-5 mb-6">
         <div class="flex flex-col sm:flex-row items-start justify-between gap-4">
             <div class="flex items-center gap-3">
                 @php $fotoCurso = $curso->foto ? asset('storage/' . $curso->foto) : null; @endphp
@@ -63,7 +58,7 @@
 
     @forelse ($estudiantes as $estudiante)
     @php $fotoEst = $estudiante->user?->foto ? asset('storage/' . $estudiante->user->foto) : null; @endphp
-    <div class="rounded-xl bg-[#132347] border border-white/10 mb-4 overflow-hidden transition-all hover:border-white/20">
+    <div class="card-3d rounded-xl bg-[#132347] border border-white/10 mb-4 overflow-hidden transition-all hover:border-white/20">
         <div class="p-4 flex items-center gap-4">
             <div class="shrink-0">
                 @if ($fotoEst)
